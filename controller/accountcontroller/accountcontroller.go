@@ -7,7 +7,7 @@ import (
 )
 
 func Index(c *fiber.Ctx) error {
-	var account []models.Account
+	var account models.Account
 
 	database.DB.Find(&account)
 
