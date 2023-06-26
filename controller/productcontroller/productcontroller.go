@@ -12,9 +12,9 @@ func ListProduct(c *fiber.Ctx) error {
 	queryValue := c.Params("category_id")
 
 	if queryValue == "" {
-		database.DB.Find(&product)
+		database.DB.Preload("ProductCategory").Find(&product)
 	} else {
-		database.DB.Where("category_id = ?", queryValue).Find(&product)
+		database.DB.Preload("ProductCategory").Where("product_category_id = ?", queryValue).Find(&product)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(product)
