@@ -31,6 +31,7 @@ func main() {
 	// cart
 	cart.Post("/", cartcontroller.ListCart)
 	cart.Post("/add", cartcontroller.AddCart)
+	cart.Delete("/delete/:id", cartcontroller.DeleteCart)
 
 	app.Listen(":3000")
 }
