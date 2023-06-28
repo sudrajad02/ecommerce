@@ -27,28 +27,28 @@ func main() {
 	delivery := api.Group("/delivery")
 
 	// auth
-	auth.Post("/", authcontroller.Login)
+	auth.Post("/login", authcontroller.Login)
 	auth.Post("/register", authcontroller.Register)
-	auth.Post("/detail-user", authcontroller.DetailAccount)
+	auth.Post("/detail-user", authcontroller.SessionChecker, authcontroller.DetailAccount)
 
 	// product
 	product.Get("/:category_id?", productcontroller.ListProduct)
 	product.Get("/detail/:product_id", productcontroller.DetailProduct)
 
 	// cart
-	cart.Post("/", cartcontroller.ListCart)
-	cart.Post("/add", cartcontroller.AddCart)
-	cart.Delete("/delete/:id", cartcontroller.DeleteCart)
+	cart.Post("/", authcontroller.SessionChecker, cartcontroller.ListCart)
+	cart.Post("/add", authcontroller.SessionChecker, cartcontroller.AddCart)
+	cart.Delete("/delete/:id", authcontroller.SessionChecker, cartcontroller.DeleteCart)
 
 	// checkout
-	checkout.Post("/", checkoutcontroller.ListCheckout)
-	checkout.Post("/add", checkoutcontroller.AddCheckout)
+	checkout.Post("/", authcontroller.SessionChecker, checkoutcontroller.ListCheckout)
+	checkout.Post("/add", authcontroller.SessionChecker, checkoutcontroller.AddCheckout)
 
 	// payment
-	payment.Post("/", deliverycontroller.UpdateStatusPayment)
+	payment.Post("/", authcontroller.SessionChecker, deliverycontroller.UpdateStatusPayment)
 
 	// delivery
-	delivery.Post("/", deliverycontroller.UpdateStatusDelivery)
+	delivery.Post("/", authcontroller.SessionChecker, deliverycontroller.UpdateStatusDelivery)
 
 	app.Listen(":3000")
 }
