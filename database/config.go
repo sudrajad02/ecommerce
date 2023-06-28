@@ -34,7 +34,7 @@ func ConncetionDatabase() {
 		panic(err)
 	}
 
-	db.AutoMigrate(&models.Account{}, &models.ProductCategory{}, &models.Product{}, &models.Cart{})
+	db.AutoMigrate(&models.Account{}, &models.AccountAddress{}, &models.ProductCategory{}, &models.Product{}, &models.Cart{})
 
 	DB = db
 
