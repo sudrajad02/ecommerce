@@ -12,6 +12,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/sudrajad02/ecommerce/database"
 	"github.com/sudrajad02/ecommerce/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func SessionChecker(c *fiber.Ctx) error {
@@ -90,10 +91,15 @@ func Login(c *fiber.Ctx) error {
 
 	var account models.Account
 
-	if err := database.DB.First(&account, "account_username = ? and account_password = ?", payload.Username, payload.Password).Error; err != nil {
+	if err := database.DB.First(&account, "account_username = ?", payload.Username).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": err.Error(),
 		})
+	}
+
+	err := bcrypt.CompareHashAndPassword([]byte(account.AccountPassword), []byte(payload.Password))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Password not correct"})
 	}
 
 	claims := jwt.MapClaims{
@@ -125,6 +131,14 @@ func Register(c *fiber.Ctx) error {
 			"message": err.Error(),
 		})
 	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(account.AccountPassword), 12)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err.Error()})
+	}
+
+	account.AccountPassword = string(hashedPassword)
 
 	if err := database.DB.Save(&account).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
