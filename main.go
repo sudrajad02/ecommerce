@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/sudrajad02/ecommerce/controller/authcontroller"
 	"github.com/sudrajad02/ecommerce/controller/cartcontroller"
+	"github.com/sudrajad02/ecommerce/controller/checkoutcontroller"
 	"github.com/sudrajad02/ecommerce/controller/productcontroller"
 	"github.com/sudrajad02/ecommerce/database"
 )
@@ -20,6 +21,7 @@ func main() {
 	auth := api.Group("/auth")
 	product := api.Group("/product")
 	cart := api.Group("/cart")
+	checkout := api.Group("/checkout")
 
 	// auth
 	auth.Post("/", authcontroller.Login)
@@ -34,6 +36,9 @@ func main() {
 	cart.Post("/", cartcontroller.ListCart)
 	cart.Post("/add", cartcontroller.AddCart)
 	cart.Delete("/delete/:id", cartcontroller.DeleteCart)
+
+	//checkout
+	checkout.Post("/", checkoutcontroller.AddCheckout)
 
 	app.Listen(":3000")
 }
