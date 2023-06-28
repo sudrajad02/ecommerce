@@ -36,7 +36,8 @@ func Login(c *fiber.Ctx) error {
 	// 	"exp":   time.Now().Add(time.Hour * 72).Unix(),
 	// }
 
-	return c.JSON(account)
+	return c.Status(fiber.StatusOK).JSON(account)
+
 }
 
 func Register(c *fiber.Ctx) error {
@@ -54,7 +55,7 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(account)
+	return c.Status(fiber.StatusOK).JSON(account)
 }
 
 func DetailAccount(c *fiber.Ctx) error {
@@ -70,5 +71,5 @@ func DetailAccount(c *fiber.Ctx) error {
 
 	database.DB.Where("account_id = ?", payload.UserId).Preload("AccountAddress", "account_address_is_active = ?", 1).Find(&account)
 
-	return c.JSON(account)
+	return c.Status(fiber.StatusOK).JSON(account)
 }

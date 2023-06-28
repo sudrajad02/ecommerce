@@ -30,7 +30,7 @@ func UpdateStatusPayment(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(checkout)
+	return c.Status(fiber.StatusOK).JSON(checkout)
 }
 
 func UpdateStatusDelivery(c *fiber.Ctx) error {
@@ -70,5 +70,5 @@ func UpdateStatusDelivery(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(checkout)
+	return c.Status(fiber.StatusOK).JSON(checkout)
 }
