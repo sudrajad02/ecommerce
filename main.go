@@ -15,6 +15,7 @@ func init() {
 func main() {
 	app := fiber.New()
 
+	// grouping endpoint
 	api := app.Group("/api")
 	auth := api.Group("/auth")
 	product := api.Group("/product")
@@ -22,7 +23,8 @@ func main() {
 
 	// auth
 	auth.Post("/", authcontroller.Login)
-	auth.Post("/register/", authcontroller.Register)
+	auth.Post("/register", authcontroller.Register)
+	auth.Post("/detail-user", authcontroller.DetailAccount)
 
 	// product
 	product.Get("/:category_id?", productcontroller.ListProduct)
