@@ -41,7 +41,8 @@ func main() {
 	cart.Delete("/delete/:id", cartcontroller.DeleteCart)
 
 	// checkout
-	checkout.Post("/", checkoutcontroller.AddCheckout)
+	checkout.Post("/", checkoutcontroller.ListCheckout)
+	checkout.Post("/add", checkoutcontroller.AddCheckout)
 
 	// payment
 	payment.Post("/", deliverycontroller.UpdateStatusPayment)
