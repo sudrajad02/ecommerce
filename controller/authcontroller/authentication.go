@@ -56,3 +56,19 @@ func Register(c *fiber.Ctx) error {
 
 	return c.JSON(account)
 }
+
+func DetailAccount(c *fiber.Ctx) error {
+	payload := struct {
+		UserId int `json:"account_id"`
+	}{}
+
+	if err := c.BodyParser(&payload); err != nil {
+		return err
+	}
+
+	var account models.Account
+
+	database.DB.Where("account_id = ?", payload.UserId).Preload("AccountAddress", "account_address_is_active = ?", 1).Find(&account)
+
+	return c.JSON(account)
+}
